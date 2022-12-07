@@ -1,3 +1,5 @@
+# Data Structures
+
 Data Structures ou estrutura de dados, é um estudo sobre a forma como os dados serão agregados, organizados, processados, levando-se em consideração, por exemplo, a eficiência para buscas, o volume dos dados trabalhados, a complexidade da implementação e a forma como os dados se relacionam.
 
 # Array
@@ -14,7 +16,7 @@ Um array é uma estrutura de dados mais simples que existe, ele armazena uma seq
 - Retornar diversos valores de uma função
 - Usado em programação dinamica para armazenar em cache resposta para subproblemas
 
-## Complexidade BigO
+## Complexidade
  
 |           | Static Array | Dynamic Array |
 |-----------|--------------|---------------|
@@ -61,7 +63,7 @@ Doubly LinkedList (Lista Duplamente Encadeada), cada *node* referencia( *pointer
 | Singly Linked | Usa menos memoria, Facil de implementar  | Dificuldade de acessar elementos anteriores |
 | Doubly Linked | Pode ser percorrido de qualquer direção | Usa 2x a memoria que uma Singly             |
 
-## Complexidade BigO
+## Complexidade
 
 |                  | Singly Linked | Doubly Linked |
 |------------------|---------------|---------------|
@@ -96,7 +98,7 @@ LinkedList<dataType> list = new LinkedList<>();
 - Usado para dar suporte a recursão, para armazenar chamadas anteriores de função
 - Usado na syntax do compilador para checar brackets e braces.
 
-### Complexidade O
+### Complexidade
 
 |           |      |
 |-----------|------|
@@ -162,4 +164,48 @@ A relação entre *recursion* e *Stack* é que para que ocorra a recurssão é n
 
 # Hash Tables
 
-É uma estrutura de dados que é usada para armazenar pares de *keys*/valores
+É uma estrutura de dados que é usada para armazenar coleções de *keys* e valores. Onde cada *key* e valor possui um *hash code* que é gerado através de uma *hash function*. Ex:
+
+	F(key) = key % capacidade = hash code
+
+Porem quando uma *hash* é calculada e retorna o mesmo valor de outra *hash* temos um problema chamado colisão e quando isso acontece os dois valores são armazenados no mesmo *bucket* e uma resolução bem comum para isso seria transformar cada *bucket* em uma *LinkedList*.
+
+![hash](https://cdn.programiz.com/sites/tutorial2program/files/Hash-3_1.png)
+
+## Usos
+
+- Aplicações criptografadas
+- Verificação de senhas
+- Operações de compilador
+
+## Complexidade
+
+
+|                  |  HashTable No collisions |
+|------------------|--------------------------|
+| Searching        | O(1)                     |
+| Insertion        | O(1)                     |
+| Deletion         | O(1)                     |
+| Space Complexity | O(n)                     |
+
+|                  |  HashTable Collision with chaining |
+|------------------|------------------------------------|
+| Searching        | O(1)                               |
+| Insertion        | O(1)                               |
+| Deletion         | O(1)                               |
+| Space Complexity | O(m + n)                           |
+
+## Implementação
+
+```java
+Hashtable<Integer, String> table = new Hashtable<>();
+```
+[HashTable Documentation](https://docs.oracle.com/javase/8/docs/api/java/util/Hashtable.html)
+
+## Pros & Cons
+
+| Pros                                                                       | Cons                                                                       |
+|----------------------------------------------------------------------------|----------------------------------------------------------------------------|
+| Melhor tipo de sincronização em relação a outras estrutura de dados        | Torna-se ineficiente quando possui muitas colisões                         |
+| São mais eficientes do que *Search Trees* ou outra estrutura de dados      | É muito dificil evitar colisões quando possui um grande conjunto de *keys* |
+| Tem um tempo constante de operação em relação a inserir, buscar e deletar  | Não é permitido valores nulos (*null*)                                     |
