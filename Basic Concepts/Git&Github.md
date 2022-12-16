@@ -1,119 +1,85 @@
 # VCS - Version Control System
-Gerencia o histórico das alterações que os arquivos do projeto sofreu ao longo do tempo. Exemplo, você pode comparar mudanças, reverter alterações e ver quem modificou algo.
-
-## Git
-Git é um sistema de controle de versões distribuído e um sistema de gerenciamento de código fonte, com ênfase em alta velocidade. O Git foi inicialmente era um projeto para o desenvolvimento do Kernel Linux, mas foi adotado por muitos outros projetos e atualmente é o controlador de versões mais utilizado.
+Um sistema de controle de versão (VCS) é um tipo de software que permite que você rastreie as alterações feitas em um conjunto de arquivos ao longo do tempo. Isso é útil porque permite que você volte para uma versão anterior dos arquivos se algo der errado ou se você precisar desfazer alterações que tenha feito. Um VCS também facilita o trabalho em equipe, permitindo que várias pessoas trabalhem em um mesmo conjunto de arquivos sem perder ou sobrescrever as alterações uns dos outros.
 
 ![git](https://miro.medium.com/max/383/1*co_1qORNdM0PI1nvCp7Iig.png)
 
+## Git
+Git é um sistema de controle de versão de código-fonte muito popular que foi criado por Linus Torvalds, o mesmo desenvolvedor do kernel do Linux. Ele permite que você rastreie as alterações em seus arquivos de código-fonte de maneira eficiente e fácil de usar. Com o Git, você pode facilmente reverter para versões anteriores de seus arquivos, ver quem fez alterações específicas e trabalhar em conjunto com outras pessoas em projetos de código-fonte.
+
+## GitHub
+É uma plataforma de desenvolvimento de código e colaboração que usa o sistema de controle de versão Git. É um lugar onde desenvolvedores podem armazenar e gerenciar seus projetos de código, bem como rastrear e controlar alterações no código. GitHub também oferece recursos como ferramentas de colaboração, integração contínua, gerenciamento de tarefas e documentação, tornando-o uma plataforma popular para projetos de código aberto e comerciais.
+
+## Boas práticas em Git
+-   Manter commits pequenos e coerentes, com alterações relacionadas ao mesmo conjunto de arquivos ou funcionalidade. Isso torna mais fácil reverter ou mesclar alterações em um commit específico, se necessário.
+-   Escrever mensagens de commit claras e descritivas que expliquem as alterações realizadas em cada commit. Isso torna mais fácil para os outros desenvolvedores entenderem o que foi alterado e por quê.
+-   Utilizar branches para desenvolver novas funcionalidades ou corrigir bugs, em vez de realizar alterações diretamente na branch principal (geralmente chamada de "master"). Isso permite que o código seja revisado e testado antes de ser mesclado com o código principal.
+-   Realizar o merge ou o rebase de branches com frequência para manter o código principal atualizado e evitar conflitos de código.
+-   Sempre verificar o código antes de realizar um commit para garantir que não estão sendo adicionados arquivos desnecessários ou que não foram resolvidos conflitos de código.
+-   Trabalhar em equipe, discutir mudanças no código e utilizar ferramentas de colaboração, como pull requests, para facilitar a revisão de código e a colaboração entre os desenvolvedores.
+
 ## Comandos
 
-### Git init
-O comando `git init` cria um novo repositório do Git. Ele pode ser usado para converter um projeto existente e não versionado em um repositório do Git ou inicializar um novo repositório vazio.
-```bash
-git init
-```
+### Criar
+| **Operação**                        | **Comando**                                    |
+|---------------------------------|--------------------------------------------|
+| Clonar um repositório existente | ``$ git clone ssh://user@domain.com/repo.git`` |
+| Criar um novo repositório local | ``$ git init``                                 |
 
-### Git config
-O comando `git config` é a função conveniente usada para definir valores de configuração do Git em projetos de nível global ou local. Esses níveis de configuração correspondem aos arquivos de texto do `.gitconfig` .
+### Modificações Locais
+| **Operação**                                                              | **Comando**                |
+|-----------------------------------------------------------------------|------------------------|
+| Arquivos alterados no seu diretório                       | ``$ git status``           |
+| Alterações em arquivos                                     | ``$ git diff``             |
+| Adicionar todas as alterações atuais ao próximo commit                | ``$ git add .``            |
+| Adicionar algumas alterações ao próximo commit                        | ``$ git add -p <arquivo>`` |
+| Efetuar o commit de todas as alterações locais em arquivos | ``$ git commit -a``        |
+| Efetuar o commit de alterações préviamente preparadas                 | ``$ git commit``           |
+| Alterar o último commit (não altera commits publicados!)              | ``$ git commit --amend``   |
 
-#### Definindo um username
-```bash
-git config --global user.name "user"
-```
+### Historico de Commits
+| **Operação**                                                         | **Comando**                |
+|------------------------------------------------------------------|------------------------|
+| Mostrar todos os commits, começando pelo mais recente            | ``$ git log``              |
+| Mostrar as alterações ao longo do tempo em um arquivo específico | ``$ git log -p <arquivo>`` |
+| Quem alterou o que e quando em um ``<arquivo>``                         | ``$ git blame <arquivo>``  |
 
-#### Definindo um email
-```bash
-git config --global user.email "user@email.com"
-```
+### Branches e Tags
+| **Operação**                                                                      | **Comando**                                     |
+|-------------------------------------------------------------------------------|---------------------------------------------|
+| Listar todas as branches existentes                                       | ``$ git branch``                                |
+| Mudar branch HEAD                                                        | ``$ git checkout <branch>``                |
+| Criar uma nova branch com base na sua HEAD atual             | ``$ git branch <nova-branch>``             |
+| Criar uma nova branch de rastreamento com base em uma branch remota | ``$ git checkout --track <remote/branch>`` |
+| Excluir uma branch local                                                 | ``$ git branch -d <branch>``               |
+| Marcar o commit atual com uma tag                                             | ``$ git tag <nome-da-tag>``                     |
 
-#### Listando configurações
-```bash
-git config --list
-```
+### Update e Upload
+| **Operação**                                                            | **Comando**                               |
+|---------------------------------------------------------------------|---------------------------------------|
+| Listar todos os repositório configurados atualmente                     | ``$ git remote -v``                       |
+| Mostrar informações sobre um repositório                                 | ``$ git remote show <remoto>``            |
+| Adicionar novo repositório remoto, nomeado ``<repositório>``                 | ``$ git remote add <remoto> <url>``       |
+| Baixar todas as alterações de ``<repositório>``, mas não integrá-las ao HEAD | ``$ git fetch <remoto>``                  |
+| Baixar alterações e integrá-las diretamente ao HEAD                 | ``$ git pull <remoto> <ramificação>``     |
+| Publicar alterações locais em um repositório                             | ``$ git push <remoto> <ramificação>``     |
+| Excluir uma branch do repositório remoto                                   | ``$ git branch -dr <remote/ramificação>`` |
+| Publicar suas tags                                                  | ``$ git push --tags``                     |
 
-### Git add
-O comando `git add` adiciona uma alteração no diretório ativo à área de staging. Ele diz ao Git que você quer incluir atualizações a um arquivo específico no próximo commit. No entanto, `git add` não tem efeito real e significativo no repositório, as alterações não são gravadas mesmo até você executar `git commit`.
+### Merge and Rebase
+| **Operação**                                                                                                  | **Comando**                                            |
+|-----------------------------------------------------------------------------------------------------------|----------------------------------------------------|
+| Mesclar ``<branch>`` com a sua atual HEAD                                                                     | ``$ git merge <branch>``                               |
+| Rebase a sua atual HEAD em ``<branch>``                             | ``$ git rebase <branch>``                              |
+| Cancelar um rebase                                                                                        | ``$ git rebase --abort``                               |
+| Continuar um rebase após resolver conflitos                                                               | ``$ git rebase --continue``                            |
+| Utilize a ferramenta de mesclagem configurada para resolver conflitos                                     | ``$ git mergetool``                                    |
 
-```bash
-git add <arquivo>||<diretorio>||*(tudo)
-```
-
-Junto com esses comandos, você também vai precisar de `git status` para ver o estado do diretório ativo e da área de staging.
-```bash
-git status
-```
-
-### Git commit
-O comando `git commit` captura um instantâneo das mudanças preparadas do projeto no momento. Os instantâneos com commit podem ser considerados versões "seguras" de um projeto, o Git nunca os altera, a menos que você peça a ele.
-
-```bash
-git commit -m "commit message"
-```
-
-Para corrigir o ultimo commit é nescessario colocar um `--amend`
-```bash
-git commit --amend -m "commit message"
-```
-
-Para desfazer um commit é nescessario
-```bash
-git reset --soft HEAD-1
-```
-
-### Git log
-O comando `git log` permite visualizar o histórico do repositório.
-```bash
-git log
-```
-
-```bash
-git log --oneline
-```
-
-### Estágios do arquivo
-![archive-stages](https://user.oc-static.com/upload/2022/01/04/16412576933806_image30.png)
-
-### Git diff
-Para visualizar diferenças entre versões do projeto, é possível utilizar o comando `git diff`
-```bash
-git diff
-```
-
-### Git restore
-O comando `git restore` ele pega qualquer modificação feita no arquivo e descarta essas modificações
-```bash
-git restore <file>
-```
-
-## Github
-É uma plataforma de hospedagem de código-fonte e arquivos com controle de versão usando o Git. Ele permite que qualquer usuario cadastrado na plataforma contribuam em projetos *Open Source* ou privados(desde de que tenham permissão) de qualquer lugar do mundo.
-
-![github](https://cdn-icons-png.flaticon.com/512/25/25231.png)
-
-## Repositórios remotos
-
-### Git remote
-Para gerenciar comunicação repositórios remotos, você precisa salvar no seu repositório local referências para os repositórios remotos. Para fazer isso, existe o comando `git remote`.
-```bash
-git remote add origin <project link>
-```
-
-### Git clone
-Para clonar repositórios remotos, é possível usar o comando `git clone`.
-```bash
-git clone <repo link> ./path
-```
-
-### Git push
-Para mandar suas mudanças a um remoto salvo como `origin` numa *branch* `main`.
-```bash
-git push origin -u main
-```
-
-### Git pull
-Semelhantemente, para receber mudanças de um repositório remoto salvo como `origin` numa *branch* `main`
-```bash
-git pull origin main
-```
-
+### Resetar
+| **Operação**                                                                                                           | **Comando**                     |
+|--------------------------------------------------------------------------------------------------------------------|-----------------------------|
+| Descartar todas as alterações locais no seu repositório                                                  | ``$ git reset --hard HEAD``     |
+| Descartar alterações locais em um arquivo específico                                                               | ``$ git checkout HEAD <file>``  |
+| Reverter um commit                                              | ``$ git revert <commit>``       |
+| Resetar o seu ponteiro HEAD para um commit anterior e descartar todas as alterações desde então                    | ``$ git reset --hard <commit>`` |
+| Resetar o seu ponteiro HEAD para um commit anterior e preservar todas as alterações como unstaged | ``$ git reset <commit>``        |
+| Resetar o seu ponteiro HEAD para um commit anterior e preservar alterações locais não commitadas                   | ``$ git reset --keep <commit>`` |
