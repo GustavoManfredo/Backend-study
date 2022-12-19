@@ -1,6 +1,7 @@
 package com.api.carshop.models;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
 import java.io.Serializable;
 import java.util.List;
@@ -8,6 +9,7 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "orders")
+@Data
 public class Orders implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -38,67 +40,4 @@ public class Orders implements Serializable {
     @Column(name = "order_comments")
     private String orderComents;
 
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
-    public List<Customers> getCustomers() {
-        return customers;
-    }
-
-    public void setCustomers(List<Customers> customers) {
-        this.customers = customers;
-    }
-
-    public Integer getOrderQuantityOrdered() {
-        return orderQuantityOrdered;
-    }
-
-    public void setOrderQuantityOrdered(Integer orderQuantityOrdered) {
-        this.orderQuantityOrdered = orderQuantityOrdered;
-    }
-
-    public Float getOrderTotalPrice() {
-        return orderTotalPrice;
-    }
-
-    public void setOrderTotalPrice(Float orderTotalPrice) {
-        this.orderTotalPrice = orderTotalPrice;
-    }
-
-    public String getOrderDate() {
-        return orderDate;
-    }
-
-    public void setOrderDate(String orderDate) {
-        this.orderDate = orderDate;
-    }
-
-    public String getOrderShipDate() {
-        return orderShipDate;
-    }
-
-    public void setOrderShipDate(String orderShipDate) {
-        this.orderShipDate = orderShipDate;
-    }
-
-    public String getOrderStatus() {
-        return orderStatus;
-    }
-
-    public void setOrderStatus(String orderStatus) {
-        this.orderStatus = orderStatus;
-    }
-
-    public String getOrderComents() {
-        return orderComents;
-    }
-
-    public void setOrderComents(String orderComents) {
-        this.orderComents = orderComents;
-    }
 }

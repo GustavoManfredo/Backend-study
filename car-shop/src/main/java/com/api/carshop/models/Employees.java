@@ -1,12 +1,14 @@
 package com.api.carshop.models;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
 import java.io.Serializable;
 import java.util.UUID;
 
 @Entity
 @Table(name = "employees")
+@Data
 public class Employees implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -30,51 +32,4 @@ public class Employees implements Serializable {
     @Column(name = "employee_jobTitle", nullable = false, length = 75)
     private String employeeJobTitle;
 
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
-    public String getEmployeeName() {
-        return employeeName;
-    }
-
-    public void setEmployeeName(String employeeName) {
-        this.employeeName = employeeName;
-    }
-
-    public String getEmployeePhone() {
-        return employeePhone;
-    }
-
-    public void setEmployeePhone(String employeePhone) {
-        this.employeePhone = employeePhone;
-    }
-
-    public String getEmployeeCPF() {
-        return employeeCPF;
-    }
-
-    public void setEmployeeCPF(String employeeCPF) {
-        this.employeeCPF = employeeCPF;
-    }
-
-    public String getEmployeeEmail() {
-        return employeeEmail;
-    }
-
-    public void setEmployeeEmail(String employeeEmail) {
-        this.employeeEmail = employeeEmail;
-    }
-
-    public String getEmployeeJobTitle() {
-        return employeeJobTitle;
-    }
-
-    public void setEmployeeJobTitle(String employeeJobTitle) {
-        this.employeeJobTitle = employeeJobTitle;
-    }
 }

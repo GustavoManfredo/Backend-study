@@ -1,12 +1,14 @@
 package com.api.carshop.models;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
 import java.io.Serializable;
 import java.util.UUID;
 
 @Entity
 @Table(name = "customers")
+@Data
 public class Customers implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -41,83 +43,4 @@ public class Customers implements Serializable {
     @Column(name = "customer_pin", nullable = false, length = 20)
     private String customerPostalCode;
 
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
-    public String getCustomerName() {
-        return customerName;
-    }
-
-    public void setCustomerName(String customerName) {
-        this.customerName = customerName;
-    }
-
-    public String getCustomerCNPJ() {
-        return customerCNPJ;
-    }
-
-    public void setCustomerCNPJ(String customerCNPJ) {
-        this.customerCNPJ = customerCNPJ;
-    }
-
-    public String getCustomerCPF() {
-        return customerCPF;
-    }
-
-    public void setCustomerCPF(String customerCPF) {
-        this.customerCPF = customerCPF;
-    }
-
-    public String getCustomerPhone() {
-        return customerPhone;
-    }
-
-    public void setCustomerPhone(String customerPhone) {
-        this.customerPhone = customerPhone;
-    }
-
-    public String getCustomerEmail() {
-        return customerEmail;
-    }
-
-    public void setCustomerEmail(String customerEmail) {
-        this.customerEmail = customerEmail;
-    }
-
-    public String getCustomerAddress() {
-        return customerAddress;
-    }
-
-    public void setCustomerAddress(String customerAddress) {
-        this.customerAddress = customerAddress;
-    }
-
-    public String getCustomerCity() {
-        return customerCity;
-    }
-
-    public void setCustomerCity(String customerCity) {
-        this.customerCity = customerCity;
-    }
-
-    public String getCustomerState() {
-        return customerState;
-    }
-
-    public void setCustomerState(String customerState) {
-        this.customerState = customerState;
-    }
-
-    public String getCustomerPostalCode() {
-        return customerPostalCode;
-    }
-
-    public void setCustomerPostalCode(String customerPostalCode) {
-        this.customerPostalCode = customerPostalCode;
-    }
 }

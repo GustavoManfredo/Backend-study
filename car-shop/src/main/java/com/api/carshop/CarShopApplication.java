@@ -3,10 +3,8 @@ package com.api.carshop;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 @SpringBootApplication
-@RestController
 public class CarShopApplication {
 
 	public static void main(String[] args) {
@@ -15,6 +13,7 @@ public class CarShopApplication {
 
 	@GetMapping("/")
 	public String index(){
-		return "<h1>Test!!!</h1>";
+		return "<h1>Testando</h1>";
 	}
+
 }
