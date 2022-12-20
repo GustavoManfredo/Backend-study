@@ -62,4 +62,26 @@ public class CustomersController {
         return customersModelOptional.<ResponseEntity<Object>>map(customersModel -> ResponseEntity.status(HttpStatus.OK).body(customersModel)).orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).body("Customer not found!"));
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Object> deleteCustomer(@PathVariable(value = "id") UUID id){
+        Optional<CustomersModel> customersModelOptional = customersService.findById(id);
+        if(!customersModelOptional.isPresent()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Customer not found!");
+        }
+        customersService.delete(customersModelOptional.get());
+        return ResponseEntity.status(HttpStatus.OK).body("Customer deleted successfully!");
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Object> updateCustomer(@PathVariable(value = "id") UUID id, @RequestBody @Valid CustomersDto customersDto){
+        Optional<CustomersModel> customersModelOptional = customersService.findById(id);
+        if (!customersModelOptional.isPresent()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Customer not found!");
+        }
+        var customerModel = new CustomersModel();
+        BeanUtils.copyProperties(customersDto, customerModel);
+        customerModel.setId((customersModelOptional.get().getId()));
+        return ResponseEntity.status(HttpStatus.OK).body(customersService.save(customerModel));
+    }
+
 }
