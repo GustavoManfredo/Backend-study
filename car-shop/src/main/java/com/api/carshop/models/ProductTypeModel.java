@@ -17,8 +17,8 @@ public class ProductTypeModel implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    @Column(name = "product_line", nullable = false, unique = true)
-    private String productLine;
+    @Column(name = "product_type", nullable = false, unique = true)
+    private String productType;
 
     @Column(name = "product_description", nullable = false)
     private String productDescription;

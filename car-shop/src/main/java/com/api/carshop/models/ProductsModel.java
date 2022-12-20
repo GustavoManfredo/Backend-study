@@ -26,7 +26,7 @@ public class ProductsModel implements Serializable {
     private String productBrand;
 
     @ManyToOne
-    @JoinColumn(name = "product_type")
+    @JoinColumn(name = "product_type", referencedColumnName = "product_type")
     private ProductTypeModel productTypeModel;
 
     @Column(name = "product_description", nullable = false)
