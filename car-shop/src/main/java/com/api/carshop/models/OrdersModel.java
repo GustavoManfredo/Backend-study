@@ -10,7 +10,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "orders")
 @Data
-public class Orders implements Serializable {
+public class OrdersModel implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -20,7 +20,7 @@ public class Orders implements Serializable {
 
     @ManyToMany
     @JoinColumn(name = "customer_id")
-    private List<Customers> customers;
+    private List<CustomersModel> customers;
 
     @Column(name = "order_quantityOrdered", nullable = false)
     private Integer orderQuantityOrdered;

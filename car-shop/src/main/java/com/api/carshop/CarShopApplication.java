@@ -11,9 +11,4 @@ public class CarShopApplication {
 		SpringApplication.run(CarShopApplication.class, args);
 	}
 
-	@GetMapping("/")
-	public String index(){
-		return "<h1>Testando</h1>";
-	}
-
 }

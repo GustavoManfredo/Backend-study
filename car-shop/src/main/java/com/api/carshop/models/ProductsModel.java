@@ -9,7 +9,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "products")
 @Data
-public class Products implements Serializable {
+public class ProductsModel implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -27,7 +27,7 @@ public class Products implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "product_type")
-    private ProductType productType;
+    private ProductTypeModel productTypeModel;
 
     @Column(name = "product_description", nullable = false)
     private String productDescription;
