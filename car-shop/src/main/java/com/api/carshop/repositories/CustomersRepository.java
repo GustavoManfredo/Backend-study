@@ -4,15 +4,13 @@ import com.api.carshop.models.CustomersModel;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.UUID;
-
 @Repository
-public interface CustomersRepository extends JpaRepository<CustomersModel, UUID> {
-    boolean existsByCustomerCPF(String customerCPF);
+public interface CustomersRepository extends JpaRepository<CustomersModel, Long> {
+    boolean existsByCpf(String cpf);
 
-    boolean existsByCustomerCNPJ(String customerCNPJ);
+    boolean existsByCnpj(String cnpj);
 
-    boolean existsByCustomerEmail(String customerEmail);
+    boolean existsByEmail(String email);
 
-    boolean existsByCustomerPhone(String customerPhone);
+    boolean existsByPhone(String phone);
 }

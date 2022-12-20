@@ -11,7 +11,19 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
+
+/*
+* Mudanças
+* Tirar os validadores da parte de postmapping e coloca-los
+* na camada de service. Tirar response entity da camada de serviço e colocar
+* na de
+*
+*
+*
+*
+* */
+
+
 
 @RestController
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -26,29 +38,29 @@ public class CustomersController {
     @PostMapping
     public ResponseEntity<Object> saveCustomer(@RequestBody @Valid CustomersDto customersDto){
 
-        if(customersService.containsNumberInName(customersDto.getCustomerName())){
+        if(customersService.containsNumberInName(customersDto.getName())){
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Conflict: Wrong Type of Name!");
         }
 
-        if(customersService.existsByCustomerCPF(customersDto.getCustomerCPF())){
+        if(customersService.existsByCpf(customersDto.getCpf())){
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Conflict: This CPF is already registered in the database!");
         }
 
-        if(customersService.existsByCustomerCNPJ(customersDto.getCustomerCNPJ())){
+        if(customersService.existsByCnpj(customersDto.getCpnj())){
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Conflict: This CNPJ is already registered in the database!");
         }
 
-        if(customersService.existsByCustomerEmail(customersDto.getCustomerEmail())){
+        if(customersService.existsByEmail(customersDto.getEmail())){
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Conflict: This email is already registered in the database!");
         }
 
-        if(customersService.existsByCustomerPhone(customersDto.getCustomerPhone())){
+        if(customersService.existsByPhone(customersDto.getPhone())){
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Conflict: This phone is already registered in the database!");
         }
 
         var customersModel = new CustomersModel();
-        BeanUtils.copyProperties(customersDto, customersModel);
-        return ResponseEntity.status(HttpStatus.CREATED).body(customersService.save(customersModel));
+        BeanUtils.copyProperties(customersDto, customersModel); //throw new / Adicionar o excpetion handler
+        return ResponseEntity.status(HttpStatus.CREATED).body(customersService.save(customersModel));//salvar no save
     }
 
     @GetMapping
@@ -57,13 +69,13 @@ public class CustomersController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Object> getOneCustomer(@PathVariable(value = "id") UUID id){
+    public ResponseEntity<Object> getOneCustomer(@PathVariable(value = "id") Long id){
         Optional<CustomersModel> customersModelOptional = customersService.findById(id);
         return customersModelOptional.<ResponseEntity<Object>>map(customersModel -> ResponseEntity.status(HttpStatus.OK).body(customersModel)).orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).body("Customer not found!"));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deleteCustomer(@PathVariable(value = "id") UUID id){
+    public ResponseEntity<Object> deleteCustomer(@PathVariable(value = "id") Long id){
         Optional<CustomersModel> customersModelOptional = customersService.findById(id);
         if(!customersModelOptional.isPresent()){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Customer not found!");
@@ -73,7 +85,7 @@ public class CustomersController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Object> updateCustomer(@PathVariable(value = "id") UUID id, @RequestBody @Valid CustomersDto customersDto){
+    public ResponseEntity<Object> updateCustomer(@PathVariable(value = "id") Long id, @RequestBody @Valid CustomersDto customersDto){
         Optional<CustomersModel> customersModelOptional = customersService.findById(id);
         if (!customersModelOptional.isPresent()){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Customer not found!");

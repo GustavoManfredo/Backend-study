@@ -1,43 +1,42 @@
 package com.api.carshop.models;
 
 import jakarta.persistence.*;
-import lombok.Data;
-
-import java.io.Serializable;
-import java.util.List;
-import java.util.UUID;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name = "orders")
-@Data
-public class OrdersModel implements Serializable {
-
-    private static final long serialVersionUID = 1L;
+@Getter @Setter
+public class OrdersModel {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    @ManyToMany
+    @ManyToOne
     @JoinColumn(name = "customer_id")
-    private List<CustomersModel> customers;
+    private CustomersModel customersModel;
+
+    @ManyToOne
+    @JoinColumn(name = "employee_id")
+    private EmployeesModel employeesModels;
 
     @Column(name = "order_quantityOrdered", nullable = false)
-    private Integer orderQuantityOrdered;
+    private Integer quantityOrdered;
 
     @Column(name = "order_totalPrice", nullable = false)
-    private Float orderTotalPrice;
+    private Float totalPrice;
 
     @Column(name = "order_date", nullable = false)
-    private String orderDate;
+    private String date;
 
     @Column(name = "order_shipDate", nullable = false)
-    private String orderShipDate;
+    private String shipDate;
 
     @Column(name = "order_status", nullable = false)
-    private String orderStatus;
+    private String status;
 
     @Column(name = "order_comments")
-    private String orderComents;
+    private String comments;
 
 }

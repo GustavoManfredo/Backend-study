@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 public class EmployeesService {
@@ -24,24 +23,24 @@ public class EmployeesService {
         return employeesRepository.save(employeesModel);
     }
 
-    public boolean existsByEmployeeCPF(String employeeCPF) {
-        if(employeeCPF == null){ return false; }
-        return employeesRepository.existsByEmployeeCPF(employeeCPF);
+    public boolean existsByCpf(String cpf) {
+        if(cpf == null){ return false; }
+        return employeesRepository.existsByCpf(cpf);
     }
 
-    public boolean existsByEmployeePhone(String employeePhone) {
-        return employeesRepository.existsByEmployeePhone(employeePhone);
+    public boolean existsByPhone(String phone) {
+        return employeesRepository.existsByPhone(phone);
     }
 
-    public boolean existsByEmployeeEmail(String employeeEmail) {
-        return employeesRepository.existsByEmployeeEmail(employeeEmail);
+    public boolean existsByEmail(String email) {
+        return employeesRepository.existsByEmail(email);
     }
 
     public List<EmployeesModel> findAll(){
         return employeesRepository.findAll();
     }
 
-    public Optional<EmployeesModel> findById(UUID id) {
+    public Optional<EmployeesModel> findById(Long id) {
         return employeesRepository.findById(id);
     }
 

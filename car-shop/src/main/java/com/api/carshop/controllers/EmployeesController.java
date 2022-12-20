@@ -28,9 +28,9 @@ public class EmployeesController {
     @PostMapping
     public ResponseEntity<Object> saveEmployee(@RequestBody @Valid EmployeesDto employeesDto){
 
-        if (employeesService.existsByEmployeeCPF(employeesDto.getEmployeeCPF())){ return ResponseEntity.status(HttpStatus.CONFLICT).body("Conflict: This CPF is already registered in the database!"); }
-        if (employeesService.existsByEmployeePhone(employeesDto.getEmployeePhone())){ return ResponseEntity.status(HttpStatus.CONFLICT).body("Conflict: This Phone number is already registered in the database!"); }
-        if (employeesService.existsByEmployeeEmail(employeesDto.getEmployeeEmail())){ return ResponseEntity.status(HttpStatus.CONFLICT).body("Conflict: This Email is already registered in the database!"); }
+        if (employeesService.existsByCpf(employeesDto.getCpf())){ return ResponseEntity.status(HttpStatus.CONFLICT).body("Conflict: This CPF is already registered in the database!"); }
+        if (employeesService.existsByPhone(employeesDto.getPhone())){ return ResponseEntity.status(HttpStatus.CONFLICT).body("Conflict: This Phone number is already registered in the database!"); }
+        if (employeesService.existsByEmail(employeesDto.getEmail())){ return ResponseEntity.status(HttpStatus.CONFLICT).body("Conflict: This Email is already registered in the database!"); }
 
         var employeesModel = new EmployeesModel();
         BeanUtils.copyProperties(employeesDto, employeesModel);
@@ -43,13 +43,13 @@ public class EmployeesController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Object> getOneEmployee(@PathVariable(value = "id") UUID id){
+    public ResponseEntity<Object> getOneEmployee(@PathVariable(value = "id") Long id){
         Optional<EmployeesModel> employeesModelOptional = employeesService.findById(id);
         return employeesModelOptional.<ResponseEntity<Object>>map(employeesModel -> ResponseEntity.status(HttpStatus.OK).body(employeesModel)).orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).body("Employee not found!"));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deleteEmployee(@PathVariable(value = "id") UUID id){
+    public ResponseEntity<Object> deleteEmployee(@PathVariable(value = "id") Long id){
         Optional<EmployeesModel> employeesModelOptional = employeesService.findById(id);
         if (!employeesModelOptional.isPresent()){ return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Employee not found!"); }
         employeesService.delete(employeesModelOptional.get());
@@ -57,7 +57,7 @@ public class EmployeesController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Object> updateEmployee(@PathVariable(value = "id") UUID id, @RequestBody @Valid EmployeesDto employeesDto){
+    public ResponseEntity<Object> updateEmployee(@PathVariable(value = "id") Long id, @RequestBody @Valid EmployeesDto employeesDto){
         Optional<EmployeesModel> employeesModelOptional = employeesService.findById(id);
         if(!employeesModelOptional.isPresent()){ return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Employee not found!"); }
 

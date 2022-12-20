@@ -2,28 +2,29 @@ package com.api.carshop.dtos;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter @Setter
 public class EmployeesDto {
 
     @NotBlank
-    private String employeeName;
+    private String name;
 
     @NotBlank
     @Size(max = 16)
-    private String employeePhone;
+    private String phone;
 
     @NotBlank
     @Size(max = 11)
-    private String employeeCPF;
+    private String cpf;
 
     @NotBlank
     @Size(max = 75)
-    private String employeeEmail;
+    private String email;
 
     @NotBlank
     @Size(max = 75)
-    private String employeeJobTitle;
+    private String jobTitle;
 
 }

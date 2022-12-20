@@ -2,29 +2,30 @@ package com.api.carshop.dtos;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter @Setter
 public class CustomersDto {
 
     @NotBlank
-    private String customerName;
+    private String name;
     @Size(max = 14)
-    private String customerCNPJ;
+    private String cpnj;
     @Size(max = 11)
-    private String customerCPF;
+    private String cpf;
     @NotBlank
     @Size(max = 16)
-    private String customerPhone;
+    private String phone;
     @NotBlank
-    private String customerEmail;
+    private String email;
     @NotBlank
-    private String customerAddress;
+    private String address;
     @NotBlank
-    private String customerCity;
+    private String city;
     @NotBlank
-    private String customerState;
+    private String state;
     @NotBlank
-    private String customerPostalCode;
+    private String postalCode;
 
 }

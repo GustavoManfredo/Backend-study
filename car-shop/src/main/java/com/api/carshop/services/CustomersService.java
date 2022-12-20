@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 public class CustomersService {
@@ -24,37 +23,37 @@ public class CustomersService {
         return customersRepository.save(customersModel);
     }
 
-    public boolean containsNumberInName(String customerName) {
-        return customerName.matches(".*\\d+.*");
+    public boolean containsNumberInName(String name) {
+        return name.matches(".*\\d+.*");
     }
 
-    public boolean existsByCustomerCPF(String customerCPF) {
-        if (customerCPF == null){
+    public boolean existsByCpf(String cpf) {
+        if (cpf == null){
             return false;
         }
-        return customersRepository.existsByCustomerCPF(customerCPF);
+        return customersRepository.existsByCpf(cpf);
     }
 
-    public boolean existsByCustomerCNPJ(String customerCNPJ) {
-        if (customerCNPJ == null){
+    public boolean existsByCnpj(String cnpj) {
+        if (cnpj == null){
             return false;
         }
-        return customersRepository.existsByCustomerCNPJ(customerCNPJ);
+        return customersRepository.existsByCnpj(cnpj);
     }
 
-    public boolean existsByCustomerEmail(String customerEmail) {
-        return customersRepository.existsByCustomerEmail(customerEmail);
+    public boolean existsByEmail(String email) {
+        return customersRepository.existsByEmail(email);
     }
 
-    public boolean existsByCustomerPhone(String customerPhone) {
-        return customersRepository.existsByCustomerPhone(customerPhone);
+    public boolean existsByPhone(String phone) {
+        return customersRepository.existsByPhone(phone);
     }
 
     public List<CustomersModel> findAll() {
         return customersRepository.findAll();
     }
 
-    public Optional<CustomersModel> findById(UUID id) {
+    public Optional<CustomersModel> findById(Long id) {
         return customersRepository.findById(id);
     }
 

@@ -1,26 +1,21 @@
 package com.api.carshop.models;
 
 import jakarta.persistence.*;
-import lombok.Data;
-
-import java.io.Serializable;
-import java.util.UUID;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name = "productType")
-@Data
-public class ProductTypeModel implements Serializable {
-
-    private static final long serialVersionUID = 1L;
+@Getter @Setter
+public class ProductTypeModel {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(name = "product_type", nullable = false, unique = true)
-    private String productType;
+    private String type;
 
     @Column(name = "product_description", nullable = false)
-    private String productDescription;
-
+    private String description;
 }
