@@ -27,8 +27,7 @@ public class EmployeesController {
     @PostMapping
     public ResponseEntity<Object> saveEmployee(@RequestBody @Valid EmployeesDto employeesDto){
         var employeesModel = new EmployeesModel();
-        BeanUtils.copyProperties(employeesDto, employeesModel);
-        return ResponseEntity.status(HttpStatus.CREATED).body(employeesService.save(employeesModel));
+        return ResponseEntity.status(HttpStatus.CREATED).body(employeesService.save(employeesModel, employeesDto));
     }
 
     @GetMapping()
@@ -53,8 +52,7 @@ public class EmployeesController {
     public ResponseEntity<Object> updateEmployee(@PathVariable(value = "id") Long id, @RequestBody @Valid EmployeesDto employeesDto){
         Optional<EmployeesModel> employeesModelOptional = employeesService.findById(id);
         var employeesModel = new EmployeesModel();
-        BeanUtils.copyProperties(employeesDto, employeesModel);
         employeesModel.setId(employeesModelOptional.get().getId());
-        return ResponseEntity.status(HttpStatus.OK).body(employeesService.update(employeesModel));
+        return ResponseEntity.status(HttpStatus.OK).body(employeesService.update(employeesModel, employeesDto));
     }
 }

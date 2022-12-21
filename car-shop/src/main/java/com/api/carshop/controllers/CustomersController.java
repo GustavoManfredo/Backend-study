@@ -14,7 +14,7 @@ import java.util.Optional;
 
 @RestController
 @CrossOrigin(origins = "*", maxAge = 3600)
-@RequestMapping("/customer")
+@RequestMapping("/customers")
 public class CustomersController {
     final CustomersService customersService;
 
@@ -25,8 +25,7 @@ public class CustomersController {
     @PostMapping
     public ResponseEntity<Object> saveCustomer(@RequestBody @Valid CustomersDto customersDto){
         var customersModel = new CustomersModel();
-        BeanUtils.copyProperties(customersDto, customersModel);
-        return ResponseEntity.status(HttpStatus.CREATED).body(customersService.save(customersModel));
+        return ResponseEntity.status(HttpStatus.CREATED).body(customersService.save(customersModel, customersDto));
     }
 
     @GetMapping
@@ -51,9 +50,8 @@ public class CustomersController {
     public ResponseEntity<Object> updateCustomer(@PathVariable(value = "id") Long id, @RequestBody @Valid CustomersDto customersDto){
         Optional<CustomersModel> customersModelOptional = customersService.findById(id);
         var customerModel = new CustomersModel();
-        BeanUtils.copyProperties(customersDto, customerModel);
         customerModel.setId((customersModelOptional.get().getId()));
-        return ResponseEntity.status(HttpStatus.OK).body(customersService.update(customerModel));
+        return ResponseEntity.status(HttpStatus.OK).body(customersService.update(customerModel, customersDto));
     }
 
 }

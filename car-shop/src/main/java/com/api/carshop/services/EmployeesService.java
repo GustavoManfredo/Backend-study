@@ -1,9 +1,11 @@
 package com.api.carshop.services;
 
+import com.api.carshop.dtos.EmployeesDto;
 import com.api.carshop.exception.ApiRequestException;
 import com.api.carshop.models.EmployeesModel;
 import com.api.carshop.repositories.EmployeesRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,17 +22,21 @@ public class EmployeesService {
     }
 
     @Transactional
-    public EmployeesModel save(EmployeesModel employeesModel) {
+    public EmployeesModel save(EmployeesModel employeesModel, EmployeesDto employeesDto) {
         if (containsNumberInName(employeesModel.getName())){ throw new ApiRequestException("Invalid name!"); }
         if (existsByCpf(employeesModel.getCpf())){ throw new ApiRequestException("This CPF is already registered in the database!"); }
         if (existsByEmail(employeesModel.getEmail())){ throw new ApiRequestException("This Email is already registered in the database!"); }
         if (existsByPhone(employeesModel.getPhone())){ throw new ApiRequestException("This Phone is already registered in the database!"); }
+        BeanUtils.copyProperties(employeesDto, employeesModel);
         return employeesRepository.save(employeesModel);
     }
 
     @Transactional
-    public EmployeesModel update(EmployeesModel employeesModel) {
-        if (containsNumberInName(employeesModel.getName())){ throw new ApiRequestException("Invalid name!"); }
+    public EmployeesModel update(EmployeesModel employeesModel, EmployeesDto employeesDto) {
+        if (containsNumberInName(employeesModel.getName())){
+            throw new ApiRequestException("Invalid name!");
+        }
+        BeanUtils.copyProperties(employeesDto, employeesModel);
         return employeesRepository.save(employeesModel);
     }
 
@@ -39,7 +45,9 @@ public class EmployeesService {
     }
 
     private boolean existsByCpf(String cpf) {
-        if(cpf == null){ return false; }
+        if(cpf == null){
+            return false;
+        }
         return employeesRepository.existsByCpf(cpf);
     }
 
@@ -57,7 +65,9 @@ public class EmployeesService {
 
     public Optional<EmployeesModel> findById(Long id) {
         Optional<EmployeesModel> employeesModelOptional = employeesRepository.findById(id);
-        if (!employeesModelOptional.isPresent()){ throw new ApiRequestException("Employee not found!"); }
+        if (!employeesModelOptional.isPresent()){
+            throw new ApiRequestException("Employee not found!");
+        }
         return employeesRepository.findById(id);
     }
 

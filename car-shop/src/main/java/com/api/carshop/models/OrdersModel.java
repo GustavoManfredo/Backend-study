@@ -15,11 +15,11 @@ public class OrdersModel {
 
     @ManyToOne
     @JoinColumn(name = "customer_id")
-    private CustomersModel customersModel;
+    private CustomersModel customerId;
 
     @ManyToOne
-    @JoinColumn(name = "employee_id")
-    private EmployeesModel employeesModels;
+    @JoinColumn(name = "seller_id")
+    private EmployeesModel employeeId;
 
     @Column(name = "order_quantityOrdered", nullable = false)
     private Integer quantityOrdered;

@@ -23,7 +23,7 @@ public class ProductsModel {
 
     @ManyToOne
     @JoinColumn(name = "product_type")
-    private ProductTypeModel productTypeModel;
+    private ProductTypeModel productType;
 
     @Column(name = "product_description", nullable = false)
     private String description;

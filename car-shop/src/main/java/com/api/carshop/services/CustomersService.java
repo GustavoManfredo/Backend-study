@@ -1,9 +1,11 @@
 package com.api.carshop.services;
 
+import com.api.carshop.dtos.CustomersDto;
 import com.api.carshop.exception.ApiRequestException;
 import com.api.carshop.models.CustomersModel;
 import com.api.carshop.repositories.CustomersRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,18 +22,22 @@ public class CustomersService {
     }
 
     @Transactional
-    public CustomersModel save(CustomersModel customersModel) {
+    public CustomersModel save(CustomersModel customersModel, CustomersDto customersDto) {
         if (containsNumberInName(customersModel.getName())){ throw new ApiRequestException("Invalid name!"); }
         if (existsByCpf(customersModel.getCpf())){ throw new ApiRequestException("This CPF is already registered in the database!"); }
         if (existsByCnpj(customersModel.getCnpj())){ throw new ApiRequestException("This CNPJ is already registered in the database!"); }
         if (existsByEmail(customersModel.getEmail())){ throw new ApiRequestException("This Email is already registered in the database!"); }
         if (existsByPhone(customersModel.getPhone())){ throw new ApiRequestException("This Phone is already registered in the database!"); }
+        BeanUtils.copyProperties(customersDto, customersModel);
         return customersRepository.save(customersModel);
     }
 
     @Transactional
-    public CustomersModel update(CustomersModel customersModel) {
-        if (containsNumberInName(customersModel.getName())){ throw new ApiRequestException("Invalid name!"); }
+    public CustomersModel update(CustomersModel customersModel, CustomersDto customersDto) {
+        if (containsNumberInName(customersModel.getName())){
+            throw new ApiRequestException("Invalid name!");
+        }
+        BeanUtils.copyProperties(customersDto, customersModel);
         return customersRepository.save(customersModel);
     }
 
@@ -67,7 +73,9 @@ public class CustomersService {
 
     public Optional<CustomersModel> findById(Long id) {
         Optional<CustomersModel> customersModelOptional = customersRepository.findById(id);
-        if (!customersModelOptional.isPresent()){ throw new ApiRequestException("Customer not found!"); }
+        if (!customersModelOptional.isPresent()){
+            throw new ApiRequestException("Customer not found!");
+        }
         return customersRepository.findById(id);
     }
 

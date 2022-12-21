@@ -14,9 +14,8 @@ public class CustomersModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany
-    @JoinColumn(name = "orders_id")
-    private List<OrdersModel> ordersModel;
+    @OneToMany(mappedBy = "customerId")
+    private List<OrdersModel> ordersId;
 
     @Column(name = "customer_name",nullable = false, unique = false)
     private String name;
