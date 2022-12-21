@@ -1,5 +1,6 @@
 package com.api.carshop.services;
 
+import com.api.carshop.exception.ApiRequestException;
 import com.api.carshop.models.EmployeesModel;
 import com.api.carshop.repositories.EmployeesRepository;
 import jakarta.transaction.Transactional;
@@ -20,19 +21,33 @@ public class EmployeesService {
 
     @Transactional
     public EmployeesModel save(EmployeesModel employeesModel) {
+        if (containsNumberInName(employeesModel.getName())){ throw new ApiRequestException("Invalid name!"); }
+        if (existsByCpf(employeesModel.getCpf())){ throw new ApiRequestException("This CPF is already registered in the database!"); }
+        if (existsByEmail(employeesModel.getEmail())){ throw new ApiRequestException("This Email is already registered in the database!"); }
+        if (existsByPhone(employeesModel.getPhone())){ throw new ApiRequestException("This Phone is already registered in the database!"); }
         return employeesRepository.save(employeesModel);
     }
 
-    public boolean existsByCpf(String cpf) {
+    @Transactional
+    public EmployeesModel update(EmployeesModel employeesModel) {
+        if (containsNumberInName(employeesModel.getName())){ throw new ApiRequestException("Invalid name!"); }
+        return employeesRepository.save(employeesModel);
+    }
+
+    private boolean containsNumberInName(String name) {
+        return name.matches(".*\\d+.*");
+    }
+
+    private boolean existsByCpf(String cpf) {
         if(cpf == null){ return false; }
         return employeesRepository.existsByCpf(cpf);
     }
 
-    public boolean existsByPhone(String phone) {
+    private boolean existsByPhone(String phone) {
         return employeesRepository.existsByPhone(phone);
     }
 
-    public boolean existsByEmail(String email) {
+    private boolean existsByEmail(String email) {
         return employeesRepository.existsByEmail(email);
     }
 
@@ -41,6 +56,8 @@ public class EmployeesService {
     }
 
     public Optional<EmployeesModel> findById(Long id) {
+        Optional<EmployeesModel> employeesModelOptional = employeesRepository.findById(id);
+        if (!employeesModelOptional.isPresent()){ throw new ApiRequestException("Employee not found!"); }
         return employeesRepository.findById(id);
     }
 

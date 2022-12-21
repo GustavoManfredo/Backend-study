@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @RestController
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -27,11 +26,6 @@ public class EmployeesController {
 
     @PostMapping
     public ResponseEntity<Object> saveEmployee(@RequestBody @Valid EmployeesDto employeesDto){
-
-        if (employeesService.existsByCpf(employeesDto.getCpf())){ return ResponseEntity.status(HttpStatus.CONFLICT).body("Conflict: This CPF is already registered in the database!"); }
-        if (employeesService.existsByPhone(employeesDto.getPhone())){ return ResponseEntity.status(HttpStatus.CONFLICT).body("Conflict: This Phone number is already registered in the database!"); }
-        if (employeesService.existsByEmail(employeesDto.getEmail())){ return ResponseEntity.status(HttpStatus.CONFLICT).body("Conflict: This Email is already registered in the database!"); }
-
         var employeesModel = new EmployeesModel();
         BeanUtils.copyProperties(employeesDto, employeesModel);
         return ResponseEntity.status(HttpStatus.CREATED).body(employeesService.save(employeesModel));
@@ -51,7 +45,6 @@ public class EmployeesController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteEmployee(@PathVariable(value = "id") Long id){
         Optional<EmployeesModel> employeesModelOptional = employeesService.findById(id);
-        if (!employeesModelOptional.isPresent()){ return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Employee not found!"); }
         employeesService.delete(employeesModelOptional.get());
         return ResponseEntity.status(HttpStatus.OK).body("Employee deleted successfully!");
     }
@@ -59,11 +52,9 @@ public class EmployeesController {
     @PutMapping("/{id}")
     public ResponseEntity<Object> updateEmployee(@PathVariable(value = "id") Long id, @RequestBody @Valid EmployeesDto employeesDto){
         Optional<EmployeesModel> employeesModelOptional = employeesService.findById(id);
-        if(!employeesModelOptional.isPresent()){ return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Employee not found!"); }
-
         var employeesModel = new EmployeesModel();
         BeanUtils.copyProperties(employeesDto, employeesModel);
         employeesModel.setId(employeesModelOptional.get().getId());
-        return ResponseEntity.status(HttpStatus.OK).body(employeesService.save(employeesModel));
+        return ResponseEntity.status(HttpStatus.OK).body(employeesService.update(employeesModel));
     }
 }
