@@ -13,7 +13,7 @@ import java.util.Optional;
 
 @RestController
 @CrossOrigin(origins = "*", maxAge = 3600)
-@RequestMapping("/product/type")
+@RequestMapping("/products/type")
 public class ProductTypeController {
 
     final
