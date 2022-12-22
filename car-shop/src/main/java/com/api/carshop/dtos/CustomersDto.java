@@ -11,7 +11,7 @@ public class CustomersDto {
     @NotBlank
     private String name;
     @Size(max = 14)
-    private String cpnj;
+    private String cnpj;
     @Size(max = 11)
     private String cpf;
     @NotBlank
