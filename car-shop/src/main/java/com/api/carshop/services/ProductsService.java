@@ -39,10 +39,12 @@ public class ProductsService {
         return productsRepository.findById(id);
     }
 
+    @Transactional
     public void delete(ProductsModel productsModel) {
         productsRepository.delete(productsModel);
     }
 
+    @Transactional
     public Object update(ProductsModel productsModel, ProductsDto productsDto) {
         BeanUtils.copyProperties(productsDto, productsModel);
         return productsRepository.save(productsModel);
