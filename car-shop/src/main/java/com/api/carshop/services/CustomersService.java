@@ -5,11 +5,11 @@ import com.api.carshop.exception.ApiRequestException;
 import com.api.carshop.models.CustomersModel;
 import com.api.carshop.repositories.CustomersRepository;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CustomersService {
@@ -22,23 +22,52 @@ public class CustomersService {
     }
 
     @Transactional
-    public CustomersModel save(CustomersModel customersModel, CustomersDto customersDto) {
-        if (containsNumberInName(customersModel.getName())){ throw new ApiRequestException("Invalid name!"); }
-        if (existsByCpf(customersModel.getCpf())){ throw new ApiRequestException("This CPF is already registered in the database!"); }
-        if (existsByCnpj(customersModel.getCnpj())){ throw new ApiRequestException("This CNPJ is already registered in the database!"); }
-        if (existsByEmail(customersModel.getEmail())){ throw new ApiRequestException("This Email is already registered in the database!"); }
-        if (existsByPhone(customersModel.getPhone())){ throw new ApiRequestException("This Phone is already registered in the database!"); }
-        BeanUtils.copyProperties(customersDto, customersModel);
-        return customersRepository.save(customersModel);
+    public CustomersDto save(CustomersDto customersDto) {
+        if (containsNumberInName(customersDto.getName())){ throw new ApiRequestException("Invalid name!"); }
+        if (existsByCpf(customersDto.getCpf())){ throw new ApiRequestException("This CPF is already registered in the database!"); }
+        if (existsByCnpj(customersDto.getCnpj())){ throw new ApiRequestException("This CNPJ is already registered in the database!"); }
+        if (existsByEmail(customersDto.getEmail())){ throw new ApiRequestException("This Email is already registered in the database!"); }
+        if (existsByPhone(customersDto.getPhone())){ throw new ApiRequestException("This Phone is already registered in the database!"); }
+        return mapModelToDto(customersRepository.save(mapDtoToModel(customersDto)));
     }
 
     @Transactional
-    public CustomersModel update(CustomersModel customersModel, CustomersDto customersDto) {
-        if (containsNumberInName(customersModel.getName())){
+    public CustomersDto update(CustomersDto customersDto, Long id) {
+        Optional<CustomersModel> customersModelOptional = customersRepository.findById(id);
+        if (containsNumberInName(customersDto.getName())){
             throw new ApiRequestException("Invalid name!");
         }
-        BeanUtils.copyProperties(customersDto, customersModel);
-        return customersRepository.save(customersModel);
+        customersDto.setId(customersModelOptional.get().getId());
+        return mapModelToDto(customersRepository.save(mapDtoToModel(customersDto)));
+    }
+
+    private CustomersDto mapModelToDto (CustomersModel customersModel){
+        return CustomersDto.builder()
+                .id(customersModel.getId())
+                .name(customersModel.getName())
+                .cpf(customersModel.getCpf())
+                .cnpj(customersModel.getCnpj())
+                .phone(customersModel.getPhone())
+                .email(customersModel.getEmail())
+                .city(customersModel.getCity())
+                .state(customersModel.getState())
+                .postalCode(customersModel.getPostalCode())
+                .build();
+    }
+
+    private CustomersModel mapDtoToModel (CustomersDto customersDto){
+        var customersModel = new CustomersModel();
+        customersModel.setId(customersDto.getId());
+        customersModel.setName(customersDto.getName());
+        customersModel.setCpf(customersDto.getCpf());
+        customersModel.setCnpj(customersDto.getCnpj());
+        customersModel.setPhone(customersDto.getPhone());
+        customersModel.setEmail(customersDto.getEmail());
+        customersModel.setAddress(customersDto.getAddress());
+        customersModel.setCity(customersDto.getCity());
+        customersModel.setState(customersDto.getState());
+        customersModel.setPostalCode(customersDto.getPostalCode());
+        return customersModel;
     }
 
     private boolean containsNumberInName(String name) {
@@ -67,8 +96,8 @@ public class CustomersService {
         return customersRepository.existsByPhone(phone);
     }
 
-    public List<CustomersModel> findAll() {
-        return customersRepository.findAll();
+    public List<CustomersDto> findAll() {
+        return customersRepository.findAll().stream().map(this::mapModelToDto).collect(Collectors.toList());
     }
 
     public Optional<CustomersModel> findById(Long id) {
@@ -79,8 +108,17 @@ public class CustomersService {
         return customersRepository.findById(id);
     }
 
+    public Optional<CustomersDto> findByIdDto(Long id){
+        Optional<CustomersModel> customersModelOptional = customersRepository.findById(id);
+        if (!customersModelOptional.isPresent()){
+            throw new ApiRequestException("Customer not found!");
+        }
+        return Optional.of(mapModelToDto(customersModelOptional.get()));
+    }
+
     @Transactional
-    public void delete(CustomersModel customersModel) {
-        customersRepository.delete(customersModel);
+    public void delete(Long id) {
+        Optional<CustomersModel> customersModelOptional = customersRepository.findById(id);
+        customersRepository.delete(customersModelOptional.get());
     }
 }

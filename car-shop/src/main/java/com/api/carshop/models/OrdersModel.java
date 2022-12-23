@@ -30,7 +30,7 @@ public class OrdersModel {
     @Column(name = "order_date", nullable = false)
     private String date;
 
-    @Column(name = "order_shipDate", nullable = false)
+    @Column(name = "order_shipDate")
     private String shipDate;
 
     @Column(name = "order_status", nullable = false)

@@ -1,7 +1,6 @@
 package com.api.carshop.controllers;
 
 import com.api.carshop.dtos.CustomersDto;
-import com.api.carshop.models.CustomersModel;
 import com.api.carshop.services.CustomersService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -22,35 +21,30 @@ public class CustomersController {
     }
 
     @PostMapping
-    public ResponseEntity<Object> saveCustomer(@RequestBody @Valid CustomersDto customersDto){
-        var customersModel = new CustomersModel();
-        return ResponseEntity.status(HttpStatus.CREATED).body(customersService.save(customersModel, customersDto));
+    public ResponseEntity<CustomersDto> saveCustomer(@RequestBody @Valid CustomersDto customersDto){
+        return ResponseEntity.status(HttpStatus.CREATED).body(customersService.save(customersDto));
     }
 
     @GetMapping
-    public ResponseEntity<List<CustomersModel>> getAllCustomers() {
+    public ResponseEntity<List<CustomersDto>> getAllCustomers() {
         return ResponseEntity.status(HttpStatus.OK).body(customersService.findAll());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Object> getOneCustomer(@PathVariable(value = "id") Long id){
-        Optional<CustomersModel> customersModelOptional = customersService.findById(id);
-        return customersModelOptional.<ResponseEntity<Object>>map(customersModel -> ResponseEntity.status(HttpStatus.OK).body(customersModel)).orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).body("Customer not found!"));
+    public ResponseEntity<CustomersDto> getOneCustomer(@PathVariable(value = "id") Long id){
+        Optional<CustomersDto> customersDtoOptional = customersService.findByIdDto(id);
+        return ResponseEntity.status(HttpStatus.OK).body(customersDtoOptional.get());
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deleteCustomer(@PathVariable(value = "id") Long id){
-        Optional<CustomersModel> customersModelOptional = customersService.findById(id);
-        customersService.delete(customersModelOptional.get());
+    public ResponseEntity<String> deleteCustomer(@PathVariable(value = "id") Long id){
+        customersService.delete(id);
         return ResponseEntity.status(HttpStatus.OK).body("Customer deleted successfully!");
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Object> updateCustomer(@PathVariable(value = "id") Long id, @RequestBody @Valid CustomersDto customersDto){
-        Optional<CustomersModel> customersModelOptional = customersService.findById(id);
-        var customerModel = new CustomersModel();
-        customerModel.setId((customersModelOptional.get().getId()));
-        return ResponseEntity.status(HttpStatus.OK).body(customersService.update(customerModel, customersDto));
+    public ResponseEntity<CustomersDto> updateCustomer(@PathVariable(value = "id") Long id, @RequestBody @Valid CustomersDto customersDto){
+        return ResponseEntity.status(HttpStatus.OK).body(customersService.update(customersDto, id));
     }
 
 }

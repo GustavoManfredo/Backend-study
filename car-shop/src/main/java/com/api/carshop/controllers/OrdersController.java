@@ -1,7 +1,6 @@
 package com.api.carshop.controllers;
 
 import com.api.carshop.dtos.OrdersDto;
-import com.api.carshop.models.OrdersModel;
 import com.api.carshop.services.OrdersService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -24,33 +23,29 @@ public class OrdersController {
     }
 
     @PostMapping
-    public ResponseEntity<Object> saveOrder(@RequestBody @Valid OrdersDto ordersDto){
-        var ordersModel = new OrdersModel();
-        return ResponseEntity.status(HttpStatus.OK).body(ordersService.save(ordersModel, ordersDto));
+    public ResponseEntity<OrdersDto> saveOrder(@RequestBody @Valid OrdersDto ordersDto){
+        return ResponseEntity.status(HttpStatus.OK).body(ordersService.save(ordersDto));
     }
 
     @GetMapping
-    public ResponseEntity<List<OrdersModel>> getAllOrders(){
+    public ResponseEntity<List<OrdersDto>> getAllOrders(){
         return ResponseEntity.status(HttpStatus.OK).body(ordersService.findAll());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Object> getOrderById(@PathVariable(value = "id") Long id){
-        Optional<OrdersModel> ordersModelOptional = ordersService.findById(id);
-        return ordersModelOptional.<ResponseEntity<Object>>map(ordersModel -> ResponseEntity.status(HttpStatus.OK).body(ordersModel)).orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).body("Order not found!"));
+        Optional<OrdersDto> ordersDtoOptional = ordersService.findByIdDto(id);
+        return ResponseEntity.status(HttpStatus.OK).body(ordersDtoOptional.get());
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deleteOrder(@PathVariable(value = "id") Long id){
-        Optional<OrdersModel> ordersModelOptional = ordersService.findById(id);
-        ordersService.delete(ordersModelOptional.get());
+    public ResponseEntity<String> deleteOrder(@PathVariable(value = "id") Long id){
+        ordersService.delete(id);
         return ResponseEntity.status(HttpStatus.OK).body("Order deleted!");
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Object> updateOrder(@PathVariable(value = "id") Long id, @RequestBody @Valid OrdersDto ordersDto){
-        Optional<OrdersModel> ordersModelOptional = ordersService.findById(id);
-        var ordersModel = new OrdersModel();
-        return ResponseEntity.status(HttpStatus.OK).body(ordersService.update(ordersModel, ordersDto));
+    public ResponseEntity<OrdersDto> updateOrder(@PathVariable(value = "id") Long id, @RequestBody @Valid OrdersDto ordersDto){
+        return ResponseEntity.status(HttpStatus.OK).body(ordersService.update(ordersDto, id));
     }
 }

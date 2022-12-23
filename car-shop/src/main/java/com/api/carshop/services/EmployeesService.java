@@ -5,11 +5,11 @@ import com.api.carshop.exception.ApiRequestException;
 import com.api.carshop.models.EmployeesModel;
 import com.api.carshop.repositories.EmployeesRepository;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class EmployeesService {
@@ -22,22 +22,44 @@ public class EmployeesService {
     }
 
     @Transactional
-    public EmployeesModel save(EmployeesModel employeesModel, EmployeesDto employeesDto) {
-        if (containsNumberInName(employeesModel.getName())){ throw new ApiRequestException("Invalid name!"); }
-        if (existsByCpf(employeesModel.getCpf())){ throw new ApiRequestException("This CPF is already registered in the database!"); }
-        if (existsByEmail(employeesModel.getEmail())){ throw new ApiRequestException("This Email is already registered in the database!"); }
-        if (existsByPhone(employeesModel.getPhone())){ throw new ApiRequestException("This Phone is already registered in the database!"); }
-        BeanUtils.copyProperties(employeesDto, employeesModel);
-        return employeesRepository.save(employeesModel);
+    public EmployeesDto save(EmployeesDto employeesDto) {
+        if (containsNumberInName(employeesDto.getName())){ throw new ApiRequestException("Invalid name!"); }
+        if (existsByCpf(employeesDto.getCpf())){ throw new ApiRequestException("This CPF is already registered in the database!"); }
+        if (existsByEmail(employeesDto.getEmail())){ throw new ApiRequestException("This Email is already registered in the database!"); }
+        if (existsByPhone(employeesDto.getPhone())){ throw new ApiRequestException("This Phone is already registered in the database!"); }
+        return mapModelToDto(employeesRepository.save(mapDtoToModel(employeesDto)));
     }
 
     @Transactional
-    public EmployeesModel update(EmployeesModel employeesModel, EmployeesDto employeesDto) {
-        if (containsNumberInName(employeesModel.getName())){
+    public EmployeesDto update(EmployeesDto employeesDto, Long id) {
+        Optional<EmployeesModel> employeesModelOptional = employeesRepository.findById(id);
+        if (containsNumberInName(employeesDto.getName())){
             throw new ApiRequestException("Invalid name!");
         }
-        BeanUtils.copyProperties(employeesDto, employeesModel);
-        return employeesRepository.save(employeesModel);
+        employeesDto.setId(employeesModelOptional.get().getId());
+        return mapModelToDto(employeesRepository.save(mapDtoToModel(employeesDto)));
+    }
+
+    private EmployeesDto mapModelToDto(EmployeesModel employeesModel){
+        return EmployeesDto.builder()
+                .id(employeesModel.getId())
+                .name(employeesModel.getName())
+                .cpf(employeesModel.getCpf())
+                .email(employeesModel.getEmail())
+                .phone(employeesModel.getPhone())
+                .jobTitle(employeesModel.getJobTitle())
+                .build();
+    }
+
+    private EmployeesModel mapDtoToModel(EmployeesDto employeesDto){
+        var employeesModel = new EmployeesModel();
+        employeesModel.setId(employeesDto.getId());
+        employeesModel.setName(employeesDto.getName());
+        employeesModel.setCpf(employeesDto.getCpf());
+        employeesModel.setEmail(employeesDto.getEmail());
+        employeesModel.setPhone(employeesDto.getPhone());
+        employeesModel.setJobTitle(employeesDto.getJobTitle());
+        return employeesModel;
     }
 
     private boolean containsNumberInName(String name) {
@@ -59,8 +81,8 @@ public class EmployeesService {
         return employeesRepository.existsByEmail(email);
     }
 
-    public List<EmployeesModel> findAll(){
-        return employeesRepository.findAll();
+    public List<EmployeesDto> findAll(){
+        return employeesRepository.findAll().stream().map(this::mapModelToDto).collect(Collectors.toList());
     }
 
     public Optional<EmployeesModel> findById(Long id) {
@@ -71,8 +93,17 @@ public class EmployeesService {
         return employeesRepository.findById(id);
     }
 
+    public Optional<EmployeesDto> findByIdDto(Long id){
+        Optional<EmployeesModel> employeesModelOptional = employeesRepository.findById(id);
+        if (!employeesModelOptional.isPresent()){
+            throw new ApiRequestException("Customer not found!");
+        }
+        return Optional.of(mapModelToDto(employeesModelOptional.get()));
+    }
+
     @Transactional
-    public void delete(EmployeesModel employeesModel) {
-        employeesRepository.delete(employeesModel);
+    public void delete(Long id) {
+        Optional<EmployeesModel> employeesModelOptional = employeesRepository.findById(id);
+        employeesRepository.delete(employeesModelOptional.get());
     }
 }

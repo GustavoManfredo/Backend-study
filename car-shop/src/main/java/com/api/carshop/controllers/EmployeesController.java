@@ -1,7 +1,6 @@
 package com.api.carshop.controllers;
 
 import com.api.carshop.dtos.EmployeesDto;
-import com.api.carshop.models.EmployeesModel;
 import com.api.carshop.services.EmployeesService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -24,34 +23,29 @@ public class EmployeesController {
     }
 
     @PostMapping
-    public ResponseEntity<Object> saveEmployee(@RequestBody @Valid EmployeesDto employeesDto){
-        var employeesModel = new EmployeesModel();
-        return ResponseEntity.status(HttpStatus.CREATED).body(employeesService.save(employeesModel, employeesDto));
+    public ResponseEntity<EmployeesDto> saveEmployee(@RequestBody @Valid EmployeesDto employeesDto){
+        return ResponseEntity.status(HttpStatus.CREATED).body(employeesService.save(employeesDto));
     }
 
     @GetMapping()
-    public ResponseEntity<List<EmployeesModel>> getAllEmployees(){
+    public ResponseEntity<List<EmployeesDto>> getAllEmployees(){
         return ResponseEntity.status(HttpStatus.OK).body(employeesService.findAll());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Object> getOneEmployee(@PathVariable(value = "id") Long id){
-        Optional<EmployeesModel> employeesModelOptional = employeesService.findById(id);
-        return employeesModelOptional.<ResponseEntity<Object>>map(employeesModel -> ResponseEntity.status(HttpStatus.OK).body(employeesModel)).orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).body("Employee not found!"));
+    public ResponseEntity<EmployeesDto> getOneEmployee(@PathVariable(value = "id") Long id){
+        Optional<EmployeesDto> employeesDtoOptional = employeesService.findByIdDto(id);
+        return ResponseEntity.status(HttpStatus.OK).body(employeesDtoOptional.get());
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deleteEmployee(@PathVariable(value = "id") Long id){
-        Optional<EmployeesModel> employeesModelOptional = employeesService.findById(id);
-        employeesService.delete(employeesModelOptional.get());
+    public ResponseEntity<String> deleteEmployee(@PathVariable(value = "id") Long id){
+        employeesService.delete(id);
         return ResponseEntity.status(HttpStatus.OK).body("Employee deleted successfully!");
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Object> updateEmployee(@PathVariable(value = "id") Long id, @RequestBody @Valid EmployeesDto employeesDto){
-        Optional<EmployeesModel> employeesModelOptional = employeesService.findById(id);
-        var employeesModel = new EmployeesModel();
-        employeesModel.setId(employeesModelOptional.get().getId());
-        return ResponseEntity.status(HttpStatus.OK).body(employeesService.update(employeesModel, employeesDto));
+    public ResponseEntity<EmployeesDto> updateEmployee(@PathVariable(value = "id") Long id, @RequestBody @Valid EmployeesDto employeesDto){
+        return ResponseEntity.status(HttpStatus.OK).body(employeesService.update(employeesDto, id));
     }
 }
