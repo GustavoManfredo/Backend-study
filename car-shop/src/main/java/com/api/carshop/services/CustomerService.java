@@ -1,24 +1,29 @@
 package com.api.carshop.services;
 
 import com.api.carshop.dto.CustomerDto;
+import com.api.carshop.dto.OrderDto;
 import com.api.carshop.exceptions.ApiRequestException;
 import com.api.carshop.mappers.CustomerMapper;
+import com.api.carshop.mappers.OrderMapper;
 import com.api.carshop.models.CustomerModel;
 import com.api.carshop.repositories.CustomerRepository;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
 public class CustomerService {
-
-    @Autowired
-    CustomerRepository customerRepository;
-
-    @Autowired
-    CustomerMapper mapper;
+    private final CustomerRepository customerRepository;
+    private final CustomerMapper mapper;
+    private final OrderMapper orderMapper;
+    public CustomerService(CustomerRepository customerRepository, CustomerMapper mapper, OrderMapper orderMapper) {
+        this.customerRepository = customerRepository;
+        this.mapper = mapper;
+        this.orderMapper = orderMapper;
+    }
 
     @Transactional
     public CustomerDto save(CustomerDto customerDto) {
@@ -42,7 +47,12 @@ public class CustomerService {
     }
 
     public CustomerDto findById(Long id) {
-        return mapper.mapToDto(checkIfIdExists(id));
+        CustomerModel customerEntity = checkIfIdExists(id);
+        CustomerDto customer = mapper.mapToDto(customerEntity);
+        List<OrderDto> orders = new ArrayList<>();
+        customerEntity.getOrder().forEach(order -> orders.add(orderMapper.mapToDto(order)));
+        customer.setOrders(orders);
+        return customer;
     }
 
     private CustomerModel checkIfIdExists(Long id){

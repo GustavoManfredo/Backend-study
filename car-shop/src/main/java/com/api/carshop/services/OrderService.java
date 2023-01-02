@@ -2,30 +2,42 @@ package com.api.carshop.services;
 
 import com.api.carshop.dto.OrderDto;
 import com.api.carshop.exceptions.ApiRequestException;
+import com.api.carshop.mappers.CustomerMapper;
+import com.api.carshop.mappers.EmployeeMapper;
 import com.api.carshop.mappers.OrderMapper;
 import com.api.carshop.models.OrderModel;
 import com.api.carshop.repositories.OrderRepository;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.Date;
 import java.util.Optional;
 
 @Service
 public class OrderService {
 
-    @Autowired
-    OrderRepository orderRepository;
-
-    @Autowired
-    OrderMapper mapper;
+    private final OrderRepository orderRepository;
+    private final OrderMapper mapper;
+    private final CustomerMapper customerMapper;
+    private final EmployeeMapper employeeMapper;
+    private final CustomerService customerService;
+    private final EmployeeService employeeService;
+    public OrderService(OrderRepository orderRepository, OrderMapper mapper, CustomerMapper customerMapper, EmployeeMapper employeeMapper, CustomerService customerService, EmployeeService employeeService) {
+        this.orderRepository = orderRepository;
+        this.mapper = mapper;
+        this.customerMapper = customerMapper;
+        this.employeeMapper = employeeMapper;
+        this.customerService = customerService;
+        this.employeeService = employeeService;
+    }
 
     @Transactional
     public OrderDto save(OrderDto orderDto){
-        final OrderModel orderEntity = orderRepository.save(mapper.mapToModel(orderValidate(orderDto)));
+        OrderModel order = mapper.mapToModel(orderValidate(orderDto));
+        order.setCustomer(customerMapper.mapToModel(customerService.findById(orderDto.getCustomerId())));
+        order.setEmployee(employeeMapper.mapToModel(employeeService.findById(orderDto.getEmployeeId())));
+        final OrderModel orderEntity = orderRepository.save(order);
         return mapper.mapToDto(orderEntity);
     }
 
@@ -46,7 +58,11 @@ public class OrderService {
     }
 
     public OrderDto findById(Long id){
-        return mapper.mapToDto(checkIfIdExists(id));
+        OrderModel orderEntity = checkIfIdExists(id);
+        OrderDto order = mapper.mapToDto(orderEntity);
+        order.setCustomerId(orderEntity.getCustomer().getId());
+        order.setEmployeeId(orderEntity.getEmployee().getId());
+        return order;
     }
 
     private OrderModel checkIfIdExists(Long id) {

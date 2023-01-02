@@ -2,7 +2,6 @@ package com.api.carshop.controllers;
 
 import com.api.carshop.dto.ProductTypeDto;
 import com.api.carshop.services.ProductTypeService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,8 +10,10 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/product/types")
 public class ProductTypeController {
 
-    @Autowired
-    ProductTypeService productTypeService;
+    private final ProductTypeService productTypeService;
+    public ProductTypeController(ProductTypeService productTypeService) {
+        this.productTypeService = productTypeService;
+    }
 
     @PostMapping
     public ResponseEntity<ProductTypeDto> saveProductType(@RequestBody ProductTypeDto productTypeDto){

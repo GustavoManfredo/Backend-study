@@ -17,16 +17,16 @@ public class OrderModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne
-    @JoinColumn(name = "customer")
-    private CustomerModel customer;
-    @ManyToOne
-    @JoinColumn(name = "employee")
-    private EmployeeModel employee;
     private Integer quantityOrdered;
     private Float totalPrice;
     private String date;
     private String shipDate;
     private String status;
     private String comments;
+    @ManyToOne
+    @JoinColumn(name = "employee")
+    private EmployeeModel employee;
+    @ManyToOne
+    @JoinColumn(name = "customer")
+    private CustomerModel customer;
 }

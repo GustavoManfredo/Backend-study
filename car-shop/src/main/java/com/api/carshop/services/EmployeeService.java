@@ -6,19 +6,18 @@ import com.api.carshop.mappers.EmployeeMapper;
 import com.api.carshop.models.EmployeeModel;
 import com.api.carshop.repositories.EmployeeRepository;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @Service
 public class EmployeeService {
-
-    @Autowired
-    EmployeeRepository employeeRepository;
-
-    @Autowired
-    EmployeeMapper mapper;
+    private final EmployeeRepository employeeRepository;
+    private final EmployeeMapper mapper;
+    public EmployeeService(EmployeeRepository employeeRepository, EmployeeMapper mapper) {
+        this.employeeRepository = employeeRepository;
+        this.mapper = mapper;
+    }
 
     @Transactional
     public EmployeeDto save(EmployeeDto employeeDto) {

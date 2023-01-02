@@ -2,7 +2,6 @@ package com.api.carshop.controllers;
 
 import com.api.carshop.services.EmployeeService;
 import com.api.carshop.dto.EmployeeDto;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,8 +11,10 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/employee")
 public class EmployeeController {
 
-    @Autowired
-    EmployeeService employeeService;
+    private final EmployeeService employeeService;
+    public EmployeeController(EmployeeService employeeService) {
+        this.employeeService = employeeService;
+    }
 
     @PostMapping
     public ResponseEntity<EmployeeDto> saveEmployee(@RequestBody EmployeeDto employeeDto){

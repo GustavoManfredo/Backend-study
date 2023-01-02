@@ -1,8 +1,5 @@
 package com.api.carshop.dto;
 
-import com.api.carshop.models.CustomerModel;
-import com.api.carshop.models.EmployeeModel;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 
@@ -22,6 +19,4 @@ public class OrderDto {
     private String shipDate;
     private String status;
     private String comments;
-    private CustomerModel customer;
-    private EmployeeModel employee;
 }

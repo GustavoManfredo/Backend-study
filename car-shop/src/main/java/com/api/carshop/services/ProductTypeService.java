@@ -6,7 +6,6 @@ import com.api.carshop.mappers.ProductTypeMapper;
 import com.api.carshop.models.ProductTypeModel;
 import com.api.carshop.repositories.ProductTypeRepository;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -14,11 +13,12 @@ import java.util.Optional;
 @Service
 public class ProductTypeService {
 
-    @Autowired
-    ProductTypeRepository productTypeRepository;
-
-    @Autowired
-    ProductTypeMapper mapper;
+    private final ProductTypeRepository productTypeRepository;
+    private final ProductTypeMapper mapper;
+    public ProductTypeService(ProductTypeRepository productTypeRepository, ProductTypeMapper mapper) {
+        this.productTypeRepository = productTypeRepository;
+        this.mapper = mapper;
+    }
 
     @Transactional
     public ProductTypeDto save(ProductTypeDto productTypeDto){

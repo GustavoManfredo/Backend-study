@@ -3,6 +3,8 @@ package com.api.carshop.dto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 
+import java.util.List;
+
 @Getter
 @Setter
 @Builder
@@ -20,4 +22,5 @@ public class CustomerDto {
     private String city;
     private String state;
     private String pin;
+    private List<OrderDto> orders;
 }

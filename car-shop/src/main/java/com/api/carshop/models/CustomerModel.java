@@ -3,6 +3,8 @@ package com.api.carshop.models;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "Customer")
 @Getter
@@ -23,4 +25,6 @@ public class CustomerModel {
     private String city;
     private String state;
     private String pin;
+    @OneToMany(mappedBy = "customer")
+    private List<OrderModel> order;
 }

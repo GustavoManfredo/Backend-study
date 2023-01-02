@@ -2,7 +2,6 @@ package com.api.carshop.controllers;
 
 import com.api.carshop.services.CustomerService;
 import com.api.carshop.dto.CustomerDto;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,8 +11,10 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/customer")
 public class CustomerController {
 
-    @Autowired
-    CustomerService customerService;
+    private final CustomerService customerService;
+    public CustomerController(CustomerService customerService) {
+        this.customerService = customerService;
+    }
 
     @PostMapping
     public ResponseEntity<CustomerDto> saveCustomer(@RequestBody CustomerDto customerDto){
