@@ -76,7 +76,8 @@ public class CustomerService {
 
     private String validateCPF(String cpf){
 
-        final String regex = "^(\\\\d{3}\\\\d{3}\\\\d{3}\\\\d{2})$";
+        final String regex = "^\\d{3}\\d{3}\\d{3}\\d{2}$";
+
 
         if (cpf == null){
             return null;
@@ -91,7 +92,7 @@ public class CustomerService {
 
     private String validateCNPJ(String cnpj){
 
-        final String regex = "(^\\\\d{2}\\\\d{3}\\\\d{3}\\\\d{4}\\\\d{2}$)";
+        final String regex = "^\\d{2}\\d{3}\\d{3}\\d{4}\\d{2}$";
 
         if (cnpj == null){
             return null;
@@ -106,7 +107,9 @@ public class CustomerService {
 
     private String validatePhone(String phone){
 
-        if (customerRepository.existsByPhone(phone)){
+        final String regex = "^\\d{2}\\d{1}\\d{4}\\d{4}$";
+
+        if (!phone.matches(regex) || customerRepository.existsByPhone(phone)){
             throw new ApiRequestException("Invalid phone!");
         }
 

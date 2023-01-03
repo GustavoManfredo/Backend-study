@@ -64,7 +64,7 @@ public class EmployeeService {
 
     private String validateCPF(String cpf){
 
-        final String regex = "^(\\\\d{3}\\\\d{3}\\\\d{3}\\\\d{2})$";
+        final String regex = "^\\d{3}\\d{3}\\d{3}\\d{2}$";
 
         if (!cpf.matches(regex) || employeeRepository.existsByCpf(cpf)){
             throw new ApiRequestException("CPF Invalid!");
@@ -75,7 +75,9 @@ public class EmployeeService {
 
     private String validatePhone(String phone){
 
-        if (employeeRepository.existsByPhone(phone)){
+        final String regex = "^\\d{2}\\d{1}\\d{4}\\d{4}$";
+
+        if (!phone.matches(regex) || employeeRepository.existsByPhone(phone)){
             throw new ApiRequestException("Invalid phone!");
         }
 

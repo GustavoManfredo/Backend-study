@@ -18,5 +18,4 @@ public class ProductDto {
     private Integer stock;
     private Float price;
     private Long typeId;
-    private ProductTypeDto productType;
 }
