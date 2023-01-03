@@ -64,25 +64,22 @@ public class EmployeeService {
 
     private String validateCPF(String cpf){
 
-        final String regex = "(\\d{3}).?(\\d{3}).?(\\d{3})-?(\\d{2})$";
-        final String replacement = "$1.$2.$3-$4";
+        final String regex = "^(\\\\d{3}\\\\d{3}\\\\d{3}\\\\d{2})$";
 
-        if (!cpf.matches(regex) || employeeRepository.existsByCpf(cpf.replaceAll(regex, replacement))){
-            throw new ApiRequestException("Invalid CPF");
+        if (!cpf.matches(regex) || employeeRepository.existsByCpf(cpf)){
+            throw new ApiRequestException("CPF Invalid!");
         }
 
-        return cpf.replaceAll(regex, replacement);
+        return cpf;
     }
 
     private String validatePhone(String phone){
-        final String regex = "^(\\(?[0-9]{2}\\)?)? ?([0-9]{4,5})-?([0-9]{4})$";
-        final String replacement = "($1)$2-$3";
 
-        if (!phone.matches(regex) || employeeRepository.existsByPhone(phone.replaceAll(regex, replacement))){
+        if (employeeRepository.existsByPhone(phone)){
             throw new ApiRequestException("Invalid phone!");
         }
 
-        return phone.replaceAll(regex, replacement);
+        return phone;
     }
 
     private String validateEmail(String email){
