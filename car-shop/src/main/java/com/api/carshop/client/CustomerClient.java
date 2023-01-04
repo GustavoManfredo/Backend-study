@@ -6,16 +6,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@FeignClient(name = "customerClient", url = "${customer-client.url}")
-@RequestMapping("customer")
+@FeignClient(name = "customerClient", url = "${url}")
 public interface CustomerClient {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     ResponseEntity<CustomerDto> getCustomerById(@RequestParam("id") Long id);
 
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping("/customer")
     ResponseEntity<CustomerDto> saveCustomer(@RequestBody CustomerDto customerDto);
 
 }
