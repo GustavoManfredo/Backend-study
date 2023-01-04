@@ -49,9 +49,11 @@ public class CustomerService {
     public CustomerDto findById(Long id) {
         CustomerModel customerEntity = checkIfIdExists(id);
         CustomerDto customer = mapper.mapToDto(customerEntity);
-        List<OrderDto> orders = new ArrayList<>();
-        customerEntity.getOrder().forEach(order -> orders.add(orderMapper.mapToDto(order)));
-        customer.setOrders(orders);
+
+        if (saveOrders(customerEntity) != null){
+            customer.setOrders(saveOrders(customerEntity));
+        }
+
         return customer;
     }
 
@@ -63,6 +65,17 @@ public class CustomerService {
         }
 
         return customerEntity.get();
+    }
+
+    private List<OrderDto> saveOrders(CustomerModel customerModel){
+
+        if (customerModel.getOrder() == null){
+            return null;
+        }
+
+        List<OrderDto> orders = new ArrayList<>();
+        customerModel.getOrder().forEach(order -> orders.add(orderMapper.mapToDto(order)));
+        return orders;
     }
 
     private CustomerDto validateCustomer(CustomerDto customerDto){
