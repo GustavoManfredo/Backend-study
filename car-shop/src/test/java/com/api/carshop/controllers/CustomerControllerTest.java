@@ -59,8 +59,6 @@ class CustomerControllerTest {
 
         String jsonCustomer = mapper.writeValueAsString(customerDto);
 
-        when(customerService.save(customerDto)).thenReturn(customerDto);
-
         MvcResult mvcResult = mockMvc.perform(post("/customer")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonCustomer))
