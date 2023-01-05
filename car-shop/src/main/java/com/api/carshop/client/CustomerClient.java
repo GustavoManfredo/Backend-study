@@ -2,7 +2,6 @@ package com.api.carshop.client;
 
 import com.api.carshop.dto.CustomerDto;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

@@ -26,7 +26,7 @@ public class CustomerServiceTest {
     @Mock
     private CustomerMapper customerMapper;
     @InjectMocks @Spy
-    private CustomerService customerService;
+    private CustomerServiceImpl customerService;
     @BeforeEach
     public void setup(){
         MockitoAnnotations.initMocks(this);
@@ -76,7 +76,7 @@ public class CustomerServiceTest {
         when(customerRepository.findById(1L)).thenReturn(Optional.of(customer));
         when(customerService.findById(1L)).thenReturn(customerDto);
 
-        var result = customerService.findById(customerDto.getId());
+        var result = customerService.findById(customer.getId());
 
         assertEquals(customerDto, result);
     }
