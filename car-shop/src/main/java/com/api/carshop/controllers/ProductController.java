@@ -2,6 +2,7 @@ package com.api.carshop.controllers;
 
 import com.api.carshop.dto.ProductDto;
 import com.api.carshop.services.ProductService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,7 +18,7 @@ public class ProductController {
 
     @PostMapping
     public ResponseEntity<ProductDto> saveProduct(@RequestBody ProductDto productDto){
-        return ResponseEntity.ok().body(productService.save(productDto));
+        return ResponseEntity.status(HttpStatus.CREATED).body(productService.save(productDto));
     }
 
     @GetMapping("/{id}")

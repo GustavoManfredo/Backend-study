@@ -2,6 +2,7 @@ package com.api.carshop.controllers;
 
 import com.api.carshop.dto.ProductTypeDto;
 import com.api.carshop.services.ProductTypeService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,7 +18,7 @@ public class ProductTypeController {
 
     @PostMapping
     public ResponseEntity<ProductTypeDto> saveProductType(@RequestBody ProductTypeDto productTypeDto){
-        return ResponseEntity.ok().body(productTypeService.save(productTypeDto));
+        return ResponseEntity.status(HttpStatus.CREATED).body(productTypeService.save(productTypeDto));
     }
 
     @GetMapping("/{id}")
@@ -25,7 +26,7 @@ public class ProductTypeController {
         return ResponseEntity.ok().body(productTypeService.findById(id));
     }
 
-    @PostMapping("/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<ProductTypeDto> updateProductType(@PathVariable(value = "id") Long id, @RequestBody ProductTypeDto productTypeDto){
         return ResponseEntity.ok().body(productTypeService.update(productTypeDto, id));
     }
